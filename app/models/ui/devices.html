@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Devices</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Device Management</h1>
+
+  <div class="nav">
+    <a href="index.html">Dashboard</a>
+    <a href="devices.html">Devices</a>
+    <a href="logs.html">Logs</a>
+    <a href="rules.html">Rules</a>
+  </div>
+
+  <h2>Add Device</h2>
+  <input type="text" id="name" placeholder="Name">
+  <input type="text" id="type" placeholder="Type (switch/host/firewall)">
+  <input type="text" id="ip" placeholder="IP Address">
+  <button onclick="addDevice()">Add</button>
+
+  <h2>Device List</h2>
+  <table border="1" width="100%">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Type</th>
+        <th>IP</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="deviceTable"></tbody>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Logs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Security Logs</h1>
+
+  <div class="nav">
+    <a href="index.html">Dashboard</a>
+    <a href="devices.html">Devices</a>
+    <a href="logs.html">Logs</a>
+    <a href="rules.html">Rules</a>
+  </div>
+
+  <label>Filter by Severity:</label>
+  <select id="severityFilter" onchange="loadLogs()">
+    <option value="all">All</option>
+    <option value="info">Info</option>
+    <option value="warning">Warning</option>
+    <option value="critical">Critical</option>
+  </select>
+
+  <table border="1" width="100%" style="margin-top:20px">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Device ID</th>
+        <th>Message</th>
+        <th>Severity</th>
+        <th>Timestamp</th>
+      </tr>
+    </thead>
+    <tbody id="logTable"></tbody>
+  </table>
+
+  <script src="script.js"></script>
+</body>
+</html>
