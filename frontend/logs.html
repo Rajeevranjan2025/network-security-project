@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Logs</title>
+  <link rel="stylesheet" href="/frontend/style.css">
+</head>
+<body>
+
+<h1>Security Logs</h1>
+
+<div class="nav">
+  <a href="/">Dashboard</a>
+  <a href="/frontend/devices.html">Devices</a>
+  <a href="/frontend/logs.html">Logs</a>
+  <a href="/frontend/rules.html">Rules</a>
+</div>
+
+<div class="container">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>Device</th><th>Message</th><th>Severity</th><th>Time</th>
+      </tr>
+    </thead>
+    <tbody id="logTable"></tbody>
+  </table>
+</div>
+
+<script>
+async function loadLogs() {
+  const res = await fetch("http://127.0.0.1:8000/logs/");
+  const logs = await res.json();
+  const table = document.getElementById("logTable");
+  table.innerHTML = "";
+
+  logs.reverse().forEach(l => {
+    table.innerHTML += `
+      <tr class="${l.severity}">
+        <td>${l.id}</td>
+        <td>${l.device_id}</td>
+        <td>${l.message}</td>
+        <td>${l.severity}</td>
+        <td>${new Date(l.timestamp).toLocaleString()}</td>
+      </tr>
+    `;
+  });
+}
+
+loadLogs();
+setInterval(loadLogs, 3000);
+</script>
+</body>
+</html>

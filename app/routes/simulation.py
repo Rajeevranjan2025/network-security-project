@@ -1,36 +1,21 @@
 from fastapi import APIRouter
-import paramiko
+import subprocess
+import os
+import signal
 
 router = APIRouter(prefix="/simulate", tags=["Simulation"])
 
-UBUNTU_IP = "192.168.29.97"
-USERNAME = "rajeev"
-PASSWORD = "Rajeev@2025"
-SCRIPT_PATH = "/home/rajeev/mininet_scripts/topology.py"
+TOPOLOGY_PATH = os.path.abspath("mininet_scripts/topology.py")
 
 @router.post("/")
 def simulate_attack():
     try:
-        ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh.connect(UBUNTU_IP, username=USERNAME, password=PASSWORD)
-
-        command = f"sudo python3 {SCRIPT_PATH}"
-        stdin, stdout, stderr = ssh.exec_command(command)
-
-        output = stdout.read().decode()
-        error = stderr.read().decode()
-
-        ssh.close()
-
-        if error:
-            return {"status": "error", "message": error}
-
-        return {
-            "status": "success",
-            "message": "Attack simulation executed successfully",
-            "output": output
-        }
-
+        subprocess.Popen(
+            ["sudo", "python3", TOPOLOGY_PATH],
+            preexec_fn=os.setsid,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+        return {"status": "success", "message": "Attack simulation started"}
     except Exception as e:
         return {"status": "error", "message": str(e)}

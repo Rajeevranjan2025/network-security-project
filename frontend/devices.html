@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Devices</title>
+  <link rel="stylesheet" href="/frontend/style.css">
+</head>
+<body>
+
+<h1>Device Management</h1>
+
+<div class="nav">
+  <a href="/">Dashboard</a>
+  <a href="/frontend/devices.html">Devices</a>
+  <a href="/frontend/logs.html">Logs</a>
+  <a href="/frontend/rules.html">Rules</a>
+</div>
+
+<div class="container">
+  <h2>Add Device</h2>
+  <input type="text" id="name" placeholder="Name">
+  <input type="text" id="type" placeholder="host / switch / firewall">
+  <input type="text" id="ip" placeholder="IP Address">
+  <button onclick="addDevice()">Add</button>
+
+  <h2>Device List</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th><th>Name</th><th>Type</th><th>IP</th><th>Status</th><th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="deviceTable"></tbody>
+  </table>
+</div>
+
+<script src="/frontend/script.js"></script>
+<script>
+async function loadDevices() {
+  const res = await fetch("http://127.0.0.1:8000/devices/");
+  const devices = await res.json();
+  const table = document.getElementById("deviceTable");
+  table.innerHTML = "";
+
+  devices.forEach(d => {
+    table.innerHTML += `
+      <tr>
+        <td>${d.id}</td>
+        <td>${d.name}</td>
+        <td>${d.type}</td>
+        <td>${d.ip}</td>
+        <td>${d.status}</td>
+        <td><button onclick="deleteDevice(${d.id})">Delete</button></td>
+      </tr>
+    `;
+  });
+}
+
+async function addDevice() {
+  const name = document.getElementById("name").value;
+  const type = document.getElementById("type").value;
+  const ip = document.getElementById("ip").value;
+
+  await fetch("http://127.0.0.1:8000/devices/", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, type, ip })
+  });
+
+  loadDevices();
+}
+
+async function deleteDevice(id) {
+  await fetch(`http://127.0.0.1:8000/devices/${id}`, { method: "DELETE" });
+  loadDevices();
+}
+
+loadDevices();
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Network Security Dashboard</title>
+  <link rel="stylesheet" href="/frontend/style.css">
+</head>
+<body>
+
+<h1>Network Security Management Dashboard</h1>
+
+<div class="nav">
+  <a href="/">Dashboard</a>
+  <a href="/frontend/devices.html">Devices</a>
+  <a href="/frontend/logs.html">Logs</a>
+  <a href="/frontend/rules.html">Rules</a>
+</div>
+
+<div class="container">
+  <div class="cards">
+    <div class="card"><h2>Total Devices</h2><p id="deviceCount">...</p></div>
+    <div class="card"><h2>Total Logs</h2><p id="logCount">...</p></div>
+    <div class="card critical"><h2>Critical Alerts</h2><p id="criticalCount">...</p></div>
+  </div>
+
+  <div class="status-panel">
+    <span id="statusDot" class="status-dot stopped"></span>
+    <span id="statusText">Network Status: STOPPED</span>
+  </div>
+
+  <div class="control-panel">
+    <button class="btn green" onclick="startNetwork()">Start</button>
+    <button class="btn gray" onclick="stopNetwork()">Stop</button>
+    <button class="btn orange" onclick="rebuildNetwork()">Rebuild</button>
+    <button class="btn red" onclick="simulateAttack()">Simulate Attack</button>
+  </div>
+
+  <p id="simulationStatus" class="status-msg"></p>
+</div>
+
+<script src="/frontend/script.js"></script>
+</body>
+</html>

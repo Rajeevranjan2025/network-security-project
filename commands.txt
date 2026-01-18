@@ -1,0 +1,23 @@
+One-command clean (best):  sudo mn -c
+
+run full reset:
+
+sudo mn -c
+sudo killall ovs-testcontroller
+sudo killall ovs-controller
+sudo killall ovs-vswitchd
+sudo systemctl restart openvswitch-switch
+
+
+How to check if clean worked :  sudo lsof -i :6653
+If nothing appears → you're clean.
+
+==================================================================
+Correct way to run your system
+Step 1: Clean
+
+sudo mn -c
+
+Step 2: Run topology
+
+sudo python3 mininet_scripts/topology.py

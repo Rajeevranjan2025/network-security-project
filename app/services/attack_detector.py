@@ -1,25 +1,11 @@
-from datetime import datetime, timedelta
 from collections import defaultdict
+import time
 
-# Store request counts
-request_tracker = defaultdict(list)
+request_log = defaultdict(list)
 
-# Threshold settings
-REQUEST_LIMIT = 5  # max 5 requests
-TIME_WINDOW = 10   # in 10 seconds
+def is_ddos_attack(ip):
+    now = time.time()
+    request_log[ip] = [t for t in request_log[ip] if now - t < 5]
+    request_log[ip].append(now)
 
-def is_ddos_attack(client_ip: str):
-    now = datetime.utcnow()
-    request_tracker[client_ip].append(now)
-
-    # Keep only recent requests
-    request_tracker[client_ip] = [
-        t for t in request_tracker[client_ip]
-        if (now - t).seconds <= TIME_WINDOW
-    ]
-
-    # If too many requests in short time → suspicious
-    if len(request_tracker[client_ip]) > REQUEST_LIMIT:
-        return True
-
-    return False
+    return len(request_log[ip]) > 20

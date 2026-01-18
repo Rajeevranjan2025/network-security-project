@@ -8,4 +8,4 @@ class Device(Base):
     name = Column(String)
     type = Column(String)
     ip = Column(String)
-    status = Column(String, default="active")
+    status = Column(String)

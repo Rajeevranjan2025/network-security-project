@@ -1,0 +1,95 @@
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: #e5e7eb;
+  margin: 0;
+}
+
+h1 { text-align: center; }
+
+.nav {
+  background: #020617;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+}
+
+.nav a {
+  color: #38bdf8;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.container {
+  padding: 30px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.cards {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.card {
+  background: #020617;
+  padding: 25px;
+  border-radius: 10px;
+  text-align: center;
+  flex: 1;
+}
+
+.card.critical {
+  border: 2px solid red;
+}
+
+table {
+  width: 100%;
+  background: #020617;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+td, th {
+  padding: 12px;
+  border-bottom: 1px solid #1e293b;
+  text-align: center;
+}
+
+.status-panel {
+  text-align: center;
+  margin: 20px;
+}
+
+.control-panel {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn {
+  padding: 12px 25px;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.green { background: green; }
+.gray { background: gray; }
+.orange { background: orange; }
+.red { background: red; }
+
+.status-dot {
+  width: 12px;
+  height: 12px;
+  display: inline-block;
+  border-radius: 50%;
+}
+
+.running { background: green; }
+.stopped { background: gray; }
+.rebuilding { background: orange; }
+.error { background: red; }
