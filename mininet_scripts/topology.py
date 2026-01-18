@@ -1,7 +1,6 @@
 from mininet.net import Mininet
 from mininet.node import OVSController
 from mininet.log import setLogLevel
-from mininet.cli import CLI
 import requests
 import time
 import os
@@ -15,7 +14,6 @@ def clean_mininet():
     os.system("sudo mn -c > /dev/null 2>&1")
     os.system("sudo killall ovs-testcontroller > /dev/null 2>&1")
     os.system("sudo killall ovs-controller > /dev/null 2>&1")
-    os.system("sudo systemctl restart openvswitch-switch > /dev/null 2>&1")
 
 def send_log(device_id, message, severity):
     try:
@@ -25,18 +23,17 @@ def send_log(device_id, message, severity):
             "severity": severity
         }, timeout=3)
         print("📝 Log sent:", message)
-    except Exception as e:
-        print("⚠ Log failed:", e)
+    except:
+        pass
+
+def sanitize(name):
+    return "".join(c for c in name if c.isalnum()).lower()
 
 def fetch_devices():
     try:
         r = requests.get(DEVICES_API, timeout=3)
-        devices = r.json()
-        if isinstance(devices, dict) and devices.get("error"):
-            return []
-        return devices
-    except Exception as e:
-        print("⚠ Fetch devices failed:", e)
+        return r.json()
+    except:
         return []
 
 def create_topology():
@@ -55,10 +52,10 @@ def create_topology():
     hosts = {}
     switches = {}
 
-    # --- Create Nodes using UI names ---
     for d in devices:
         dtype = d["type"].lower()
-        name = d["name"]
+        raw_name = d["name"]
+        name = sanitize(raw_name)
 
         if dtype in ["host", "firewall"]:
             hosts[name] = net.addHost(name)
@@ -68,15 +65,12 @@ def create_topology():
             switches[name] = net.addSwitch(name)
             print(f"🔀 Switch added: {name}")
 
-    # Auto switch if none
     if not switches:
-        s_auto = net.addSwitch("s1")
-        switches["s1"] = s_auto
+        switches["s1"] = net.addSwitch("s1")
         print("🔀 Auto switch created: s1")
 
     main_switch = list(switches.values())[0]
 
-    # --- Links ---
     for h in hosts.values():
         net.addLink(h, main_switch)
 
@@ -86,7 +80,6 @@ def create_topology():
     print("📡 Testing connectivity...")
     net.pingAll()
 
-    # --- Attack Simulation ---
     if len(hosts) >= 2:
         hlist = list(hosts.values())
         attacker = hlist[0]
@@ -104,13 +97,9 @@ def create_topology():
         )
 
     print("✅ Network is LIVE")
-    print("🖥 Entering Mininet CLI...")
-    print("Type: nodes | net | pingall | exit")
 
-    CLI(net)
-
-    print("🛑 Stopping network...")
-    net.stop()
+    while True:
+        time.sleep(5)
 
 if __name__ == "__main__":
     setLogLevel("info")

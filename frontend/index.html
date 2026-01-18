@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Network Security Dashboard</title>
   <link rel="stylesheet" href="/frontend/style.css">
 </head>
@@ -16,17 +17,33 @@
 </div>
 
 <div class="container">
+
   <div class="cards">
-    <div class="card"><h2>Total Devices</h2><p id="deviceCount">...</p></div>
-    <div class="card"><h2>Total Logs</h2><p id="logCount">...</p></div>
-    <div class="card critical"><h2>Critical Alerts</h2><p id="criticalCount">...</p></div>
+    <div class="card">
+      <h2>Total Devices</h2>
+      <p id="deviceCount">Loading...</p>
+    </div>
+
+    <div class="card">
+      <h2>Total Logs</h2>
+      <p id="logCount">Loading...</p>
+    </div>
+
+    <div class="card critical">
+      <h2>Critical Alerts</h2>
+      <p id="criticalCount">Loading...</p>
+    </div>
   </div>
 
+  <!-- STATUS PANEL -->
   <div class="status-panel">
-    <span id="statusDot" class="status-dot stopped"></span>
-    <span id="statusText">Network Status: STOPPED</span>
+    <div class="status-row">
+      <span id="statusDot" class="status-dot stopped"></span>
+      <span id="statusText">Network Status: STOPPED</span>
+    </div>
   </div>
 
+  <!-- CONTROL PANEL -->
   <div class="control-panel">
     <button class="btn green" onclick="startNetwork()">Start</button>
     <button class="btn gray" onclick="stopNetwork()">Stop</button>
@@ -35,8 +52,9 @@
   </div>
 
   <p id="simulationStatus" class="status-msg"></p>
+
 </div>
 
-<script src="/frontend/script.js"></script>
+<script src="/frontend/script.js" defer></script>
 </body>
 </html>

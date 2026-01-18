@@ -14,11 +14,11 @@ async function loadDashboard() {
     document.getElementById("deviceCount").innerText = Array.isArray(devices) ? devices.length : 0;
     document.getElementById("logCount").innerText = Array.isArray(logs) ? logs.length : 0;
 
-    const criticalLogs = Array.isArray(logs)
-      ? logs.filter(l => l.severity === "critical")
-      : [];
+    const critical = Array.isArray(logs)
+      ? logs.filter(l => l.severity === "critical").length
+      : 0;
 
-    document.getElementById("criticalCount").innerText = criticalLogs.length;
+    document.getElementById("criticalCount").innerText = critical;
 
   } catch (err) {
     console.error("Dashboard error:", err);
@@ -26,14 +26,24 @@ async function loadDashboard() {
 }
 
 // ================= NETWORK CONTROLS =================
-async function startNetwork() { return networkAction("/network/start", "Network started"); }
-async function stopNetwork() { return networkAction("/network/stop", "Network stopped"); }
-async function rebuildNetwork() { return networkAction("/network/rebuild", "Network rebuilt"); }
-async function simulateAttack() { return networkAction("/network/simulate", "Attack simulation started"); }
+async function startNetwork() {
+  return networkAction("/network/start", "Network started");
+}
+
+async function stopNetwork() {
+  return networkAction("/network/stop", "Network stopped");
+}
+
+async function rebuildNetwork() {
+  return networkAction("/network/rebuild", "Network rebuilt");
+}
+
+async function simulateAttack() {
+  return networkAction("/network/simulate", "Attack started");
+}
 
 async function networkAction(endpoint, successMsg) {
   const statusEl = document.getElementById("simulationStatus");
-
   statusEl.innerText = "⏳ Processing...";
 
   try {
@@ -52,12 +62,11 @@ async function networkAction(endpoint, successMsg) {
     }, 2000);
 
   } catch (err) {
-    console.error("Network error:", err);
-    statusEl.innerText = "❌ Action failed!";
+    statusEl.innerText = "❌ Failed";
   }
 }
 
-// ================= STATUS =================
+// ================= NETWORK STATUS =================
 async function fetchNetworkStatus() {
   try {
     const res = await fetch(`${API_BASE}/network/status`);

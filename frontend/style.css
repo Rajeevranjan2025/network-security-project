@@ -1,95 +1,120 @@
 body {
-  font-family: Arial;
+  font-family: "Segoe UI", Arial, sans-serif;
   background: #0f172a;
   color: #e5e7eb;
   margin: 0;
+  padding: 0;
 }
 
-h1 { text-align: center; }
+h1 {
+  text-align: center;
+  margin-top: 20px;
+}
 
 .nav {
-  background: #020617;
-  padding: 15px;
   display: flex;
   justify-content: center;
-  gap: 25px;
+  gap: 30px;
+  background: #020617;
+  padding: 15px;
 }
 
 .nav a {
-  color: #38bdf8;
+  color: #94a3b8;
   text-decoration: none;
   font-weight: bold;
 }
 
+.nav a:hover {
+  color: #38bdf8;
+}
+
 .container {
-  padding: 30px;
   max-width: 1000px;
   margin: auto;
+  padding: 30px;
 }
 
 .cards {
   display: flex;
+  justify-content: space-between;
   gap: 20px;
-  justify-content: center;
+  margin-top: 40px;
 }
 
 .card {
   background: #020617;
   padding: 25px;
-  border-radius: 10px;
-  text-align: center;
   flex: 1;
-}
-
-.card.critical {
-  border: 2px solid red;
-}
-
-table {
-  width: 100%;
-  background: #020617;
-  margin-top: 20px;
-  border-collapse: collapse;
-}
-
-td, th {
-  padding: 12px;
-  border-bottom: 1px solid #1e293b;
   text-align: center;
+  border-radius: 10px;
+  border: 1px solid #1e293b;
+}
+
+.card p {
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.critical {
+  border: 1px solid #ef4444;
+  color: #ef4444;
 }
 
 .status-panel {
+  background: #020617;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 40px;
   text-align: center;
-  margin: 20px;
 }
 
-.control-panel {
+.status-row {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
+  align-items: center;
+  font-weight: bold;
 }
-
-.btn {
-  padding: 12px 25px;
-  border: none;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.green { background: green; }
-.gray { background: gray; }
-.orange { background: orange; }
-.red { background: red; }
 
 .status-dot {
   width: 12px;
   height: 12px;
-  display: inline-block;
   border-radius: 50%;
 }
 
-.running { background: green; }
-.stopped { background: gray; }
-.rebuilding { background: orange; }
-.error { background: red; }
+.status-dot.running { background: #22c55e; }
+.status-dot.stopped { background: #64748b; }
+.status-dot.rebuilding { background: #facc15; }
+.status-dot.error { background: #ef4444; }
+
+.control-panel {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn.green { background: #22c55e; }
+.btn.gray { background: #64748b; }
+.btn.orange { background: #f97316; }
+.btn.red { background: #ef4444; }
+
+.btn:hover {
+  opacity: 0.8;
+}
+
+.status-msg {
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+}

@@ -7,18 +7,24 @@ from app.services.security_engine import create_security_log
 from app.services.attack_detector import is_ddos_attack
 import threading
 import requests
+import re
 
 router = APIRouter(prefix="/devices", tags=["Devices"])
 
 NETWORK_REBUILD_URL = "http://127.0.0.1:8000/network/rebuild"
 
+def sanitize(name):
+    name = name.lower()
+    name = re.sub(r'[^a-z0-9]', '', name)
+    return name
+
 def trigger_rebuild_async():
     def run():
         try:
-            requests.post(NETWORK_REBUILD_URL, timeout=2)
+            requests.post(NETWORK_REBUILD_URL, timeout=3)
             print("🔄 Network rebuild triggered")
         except Exception as e:
-            print("⚠ Failed to rebuild network:", e)
+            print("⚠ Rebuild failed:", e)
     threading.Thread(target=run).start()
 
 def get_db():
@@ -30,8 +36,10 @@ def get_db():
 
 @router.post("/", response_model=DeviceResponse)
 def add_device(device: DeviceCreate, db: Session = Depends(get_db)):
+    name = sanitize(device.name)
+
     new_device = Device(
-        name=device.name,
+        name=name,
         type=device.type,
         ip=device.ip,
         status="active"
@@ -43,7 +51,7 @@ def add_device(device: DeviceCreate, db: Session = Depends(get_db)):
     create_security_log(
         db=db,
         device_id=new_device.id,
-        message=f"Device {new_device.name} added",
+        message=f"Device {name} added",
         severity="info"
     )
 
@@ -59,7 +67,7 @@ def list_devices(request: Request, db: Session = Depends(get_db)):
         create_security_log(
             db=db,
             device_id=0,
-            message=f"Possible DDoS detected from IP {client_ip}",
+            message=f"Possible DDoS detected from {client_ip}",
             severity="critical"
         )
         return []
